@@ -23,7 +23,7 @@ install_aliases()
 
 
 URL = 'http://files.pushshift.io/reddit/submissions/'
-API_TOKEN = '6a5c1390c6082f08fac0f56c5f44fe6e'
+API_TOKEN = '65d40e5583ad95676f95de1fa1bfbc40'
 CPU_COUNT = mp.cpu_count() * 2
 manager = mp.Manager()
 file_q = manager.Queue()
