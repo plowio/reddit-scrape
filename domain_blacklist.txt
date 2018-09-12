@@ -1,3 +1,4 @@
 .reddit.com
 youtube.com
 youtu.be
+imgur.com
