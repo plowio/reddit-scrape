@@ -145,7 +145,8 @@ def main():
     global file_q
     global api_q
     subreddit_matches = 0
-    fieldnames = ['Internal category name', 'Type', 'Date', 'siteName', 'Url', 'Title', 'Body']
+    #fieldnames = ['Internal category name', 'Type', 'Date', 'siteName', 'Url', 'Title', 'Body']
+    fieldnames = ['keywords', 'type', 'date', 'source', 'url', 'title', 'text']
     file_name = input("What is archive name? ")
     in_subreddit = input("What is subreddit name? ")
     category = input("What is category name? ")
