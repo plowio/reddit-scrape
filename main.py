@@ -1,26 +1,25 @@
 
-import sys
-sys.path.append('modules')
-
-import os
+import bz2
 import csv
 import json
-import bz2
-import requests
 import lzma
-
-from builtins import input
-from future.standard_library import install_aliases
-install_aliases()
-
 import multiprocessing as mp
-from urllib.request import urlopen
+import os
+import sys
+from builtins import input
 from datetime import datetime
 from time import sleep
+from urllib.request import urlopen
 
+import requests
+from future.standard_library import install_aliases
 from tqdm import tqdm
 
 from client import DiffbotClient
+
+sys.path.append('modules')
+
+install_aliases()
 
 
 URL = 'http://files.pushshift.io/reddit/submissions/'
