@@ -150,7 +150,7 @@ def main():
     in_subreddit = input("What is subreddit name? ")
     category = input("What is category name? ")
     # file_name = 'RS_2011-01.bz2'  # RS_2011-01.bz2 RS_2018-02.xz
-    # in_subreddit = 'UX_Design'
+    # in_subreddit = 'UXDesign'
     # category = 'UX_Design'
 
     dst_file = './downloads/{0}'.format(file_name)
@@ -172,7 +172,7 @@ def main():
     sleep(2)  # to do not break progress bar, need to wait workers start
 
     with open('domain_blacklist.txt', 'r') as blacklist_file:
-        blacklist = blacklist_file.readlines()
+        blacklist = blacklist_file.read().splitlines()
 
     file_extension = ''.join(dst_file.split('/')[-1].split('.')[1:])
 
@@ -194,7 +194,7 @@ def main():
         subreddit = line.get('subreddit')
         url = line.get('url')
 
-        if subreddit and subreddit == in_subreddit and url and all(blocked_url not in url for blocked_url in blacklist):
+        if subreddit and subreddit == in_subreddit and url and all(blocked_url.lower() not in url.lower() for blocked_url in blacklist):
             subreddit_matches += 1
             api_q.put(url)
 
