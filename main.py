@@ -37,7 +37,6 @@ def download_from_url(url, dst):
     """
     file_size = int(urlopen(url).info().get('Content-Length', -1))
     first_byte = os.path.getsize(dst) if os.path.exists(dst) else 0
-    print('{0} {1}'.format(datetime.utcnow()))
 
     if first_byte >= file_size:
         print('File exists in "downloads" folder. Working with it.')
@@ -149,10 +148,12 @@ def main():
     fieldnames = ['keywords', 'type', 'date', 'source', 'url', 'title', 'text', 'description']
     file_name = input("What is archive name? ")
     in_subreddit = input("What is subreddit name? ")
+    min_ups = input("What is the minimum number of upvotes? ")
     category = input("What is category name? ")
     # file_name = 'RS_2011-01.bz2'  # RS_2011-01.bz2 RS_2018-02.xz
     # in_subreddit = 'UXDesign'
     # category = 'UX_Design'
+    print('{0}'.format(datetime.utcnow()))
 
     dst_file = './downloads/{0}'.format(file_name)
     file_name_csv = './downloads/{0}_{1}_{2}'.format(category, in_subreddit, file_name.replace('bz2', 'csv').replace('xz', 'csv'))
@@ -175,14 +176,17 @@ def main():
     with open('domain_blacklist.txt', 'r') as blacklist_file:
         blacklist = blacklist_file.read().splitlines()
 
+#TODO check for extracted version of the file
+
     file_extension = ''.join(dst_file.split('/')[-1].split('.')[1:])
+
 
     if file_extension == 'bz2':
         src_file = load_bz2_json(dst_file)
     elif file_extension == 'xz':
         src_file = lzma.open(dst_file)
 
-    print('Extracting file...')
+    print('Parsing file...')
 
     for line in src_file:
 
@@ -196,7 +200,7 @@ def main():
         url = line.get('url')
         ups = line.get('ups')
 
-        if subreddit and subreddit == in_subreddit and url and ups and ups > 4 and all(blocked_url.lower() not in url.lower() for blocked_url in blacklist):
+        if subreddit and subreddit == in_subreddit and url and ups and int(ups) > int(min_ups) and all(blocked_url.lower() not in url.lower() for blocked_url in blacklist):
             subreddit_matches += 1
             api_q.put(url)
 
