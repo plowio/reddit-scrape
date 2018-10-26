@@ -1,4 +1,3 @@
-
 import bz2
 import csv
 import json
@@ -11,13 +10,14 @@ from datetime import datetime
 from time import sleep
 from urllib.request import urlopen
 
+sys.path.append('modules')
+
 import requests
 from future.standard_library import install_aliases
 from tqdm import tqdm
 
 from client import DiffbotClient
 
-sys.path.append('modules')
 
 install_aliases()
 
@@ -37,6 +37,7 @@ def download_from_url(url, dst):
     """
     file_size = int(urlopen(url).info().get('Content-Length', -1))
     first_byte = os.path.getsize(dst) if os.path.exists(dst) else 0
+    print('{0} {1}'.format(datetime.utcnow()))
 
     if first_byte >= file_size:
         print('File exists in "downloads" folder. Working with it.')
@@ -145,7 +146,7 @@ def main():
     global api_q
     subreddit_matches = 0
     #fieldnames = ['Internal category name', 'Type', 'Date', 'siteName', 'Url', 'Title', 'Body']
-    fieldnames = ['keywords', 'type', 'date', 'source', 'url', 'title', 'text']
+    fieldnames = ['keywords', 'type', 'date', 'source', 'url', 'title', 'text', 'description']
     file_name = input("What is archive name? ")
     in_subreddit = input("What is subreddit name? ")
     category = input("What is category name? ")
@@ -193,8 +194,9 @@ def main():
 
         subreddit = line.get('subreddit')
         url = line.get('url')
+        ups = line.get('ups')
 
-        if subreddit and subreddit == in_subreddit and url and all(blocked_url.lower() not in url.lower() for blocked_url in blacklist):
+        if subreddit and subreddit == in_subreddit and url and ups and ups > 4 and all(blocked_url.lower() not in url.lower() for blocked_url in blacklist):
             subreddit_matches += 1
             api_q.put(url)
 
